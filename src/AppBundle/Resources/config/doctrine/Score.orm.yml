@@ -1,0 +1,18 @@
+AppBundle\Entity\Score:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ScoreRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        idUser:
+            type: integer
+        idCat:
+            type: integer
+        score:
+            type: integer
+    lifecycleCallbacks: {  }

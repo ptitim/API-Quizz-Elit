@@ -15,23 +15,12 @@ class User
     /**
      * @var string
      */
-    private $pseudo;
+    private $password;
 
     /**
      * @var string
      */
-    private $classement;
-
-    /**
-     * @var string
-     */
-    private $mail;
-
-    /**
-     * @var int
-     */
-    private $idFacebook;
-
+    private $email;
 
     /**
      * Get id
@@ -44,109 +33,51 @@ class User
     }
 
     /**
-     * Set pseudo
+     * Set password
      *
-     * @param string $pseudo
+     * @param string $password
      *
      * @return User
      */
-    public function setPseudo($pseudo)
+    public function setPassword($password)
     {
-        $this->pseudo = $pseudo;
+        $this->password = md5($password);
 
         return $this;
     }
 
     /**
-     * Get pseudo
+     * Get password
      *
      * @return string
      */
-    public function getPseudo()
+    public function getPassword()
     {
-        return $this->pseudo;
+        return $this->password;
     }
 
     /**
-     * Set classement
+     * Set email
      *
-     * @param string $classement
+     * @param string $email
      *
      * @return User
      */
-    public function setClassement($classement)
+    public function setEmail($email)
     {
-        $this->classement = $classement;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get classement
+     * Get email
      *
      * @return string
      */
-    public function getClassement()
+    public function getEmail()
     {
-        return $this->classement;
-    }
-
-    /**
-     * Set mail
-     *
-     * @param string $mail
-     *
-     * @return User
-     */
-    public function setMail($mail)
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    /**
-     * Get mail
-     *
-     * @return string
-     */
-    public function getMail()
-    {
-        return $this->mail;
-    }
-
-    /**
-     * Set idFacebook
-     *
-     * @param string $idFacebook
-     *
-     * @return User
-     */
-    public function setIdFacebook($idFacebook)
-    {
-        $this->idFacebook = $idFacebook;
-
-        return $this;
-    }
-
-    /**
-     * Get idFacebook
-     *
-     * @return string
-     */
-    public function getIdFacebook()
-    {
-        return $this->idFacebook;
-    }
-
-    public function getCopy(){
-        $copy = array(
-            "username" => $this->pseudo,
-            "socket" => $this->socket,
-            "scoreTotal" => $this->classement,
-            "playing" => false,
-            "friendsList" => []
-        );
+        return $this->email;
     }
 }
 

@@ -1,0 +1,16 @@
+AppBundle\Entity\Friendlist:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\FriendlistRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        idUser:
+            type: integer
+        idFriend:
+            type: integer
+    lifecycleCallbacks: {  }

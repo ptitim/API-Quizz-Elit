@@ -1,0 +1,21 @@
+AppBundle\Entity\UserInformation:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\UserInformationRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        idUser:
+            type: integer
+            unique: true
+        scoreTotal:
+            type: integer
+        username:
+            type: string
+            length: '40'
+            unique: true
+    lifecycleCallbacks: {  }

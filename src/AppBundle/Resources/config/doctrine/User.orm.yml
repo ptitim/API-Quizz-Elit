@@ -9,21 +9,11 @@ AppBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
-        pseudo:
+        password:
             type: string
             length: 255
-            unique: true
-        classement:
+        email:
             type: string
             length: 255
-        mail:
-            type: string
-            length: 255
-            nullable: true
-            unique: true
-        idFacebook:
-            type: integer
-            length: 255
-            nullable: true
             unique: true
     lifecycleCallbacks: {  }

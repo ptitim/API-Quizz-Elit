@@ -9,6 +9,6 @@ class CorsListener {
         $responseHeader->set('Access-Control-Allow-Headers', 'origin, content-type, accept');
         $responseHeader->set('Access-Control-Allow-Origin', '*');
         $responseHeader->set('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS, PATCH');
-        $responseHeader->set('Content-Type', 'application/json');
+        // $responseHeader->set('Content-Type', 'application/json');
     }
 }
