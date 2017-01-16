@@ -1,11 +1,16 @@
 {
- "Users": [
-     {"username": "popol", "socket": 5765 , "score": 1233},
-     {"username": "richard", "socket": 79868, "score": 12343}
+ "users": [
+     {"username": "popol", "socket": 5765 , "score": 1233, "playing": false, "friendList":[
+         {"username": "titim", "score":1233, "playing": true},
+         {"username": "richard", "score":1233 ,"playing": false}
+     ]},
+     {"username": "richard", "socket": 79868, "score": 12343,"playing": false, "friendList": [
+
+     ]}
  ],
  "questions": [
      {"body": "intitluer", "answer": "machin", "falsies": ["truc", "tiennou", "jhdfg"]},
      {"body": "intituler2", "answer": "idriss", "falsies": ["truc", "tiennou", "jhdfg"]}
- ]
-
+ ],
+ "categories": ["film", "pays", "test"]
  }

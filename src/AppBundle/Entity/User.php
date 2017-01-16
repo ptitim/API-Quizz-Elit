@@ -138,5 +138,15 @@ class User
     {
         return $this->idFacebook;
     }
+
+    public function getCopy(){
+        $copy = array(
+            "username" => $this->pseudo,
+            "socket" => $this->socket,
+            "scoreTotal" => $this->classement,
+            "playing" => false,
+            "friendsList" => []
+        );
+    }
 }
 
