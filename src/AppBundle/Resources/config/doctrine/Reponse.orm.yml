@@ -1,0 +1,18 @@
+AppBundle\Entity\Reponse:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\ReponseRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        reponse:
+            type: string
+            length: 255
+        catReponse:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

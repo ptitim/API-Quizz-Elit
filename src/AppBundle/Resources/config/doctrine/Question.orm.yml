@@ -1,0 +1,27 @@
+AppBundle\Entity\Question:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\QuestionRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        reponse:
+            type: string
+            length: 255
+        body:
+            type: string
+            length: 255
+            unique: true
+        catQuestion:
+            type: string
+            length: 255
+        catReponse:
+            type: string
+            length: 255
+        popularite:
+            type: integer
+    lifecycleCallbacks: {  }

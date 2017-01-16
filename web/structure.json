@@ -1,0 +1,11 @@
+{
+ "Users": [
+     {"username": "popol", "socket": 5765 , "score": 1233},
+     {"username": "richard", "socket": 79868, "score": 12343}
+ ],
+ "questions": [
+     {"body": "intitluer", "answer": "machin", "falsies": ["truc", "tiennou", "jhdfg"]},
+     {"body": "intituler2", "answer": "idriss", "falsies": ["truc", "tiennou", "jhdfg"]}
+ ]
+
+ }
