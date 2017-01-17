@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * UserInformation
  */
@@ -28,10 +30,22 @@ class UserInformation
     private $username;
 
     /**
-    *@var int
+    * @var int
     */
     private $socket;
 
+    /**
+    * @var boolean
+    */
+    private $playing;
+
+
+    private $friendsList;
+
+    public function __construct(int $idUser){
+        $this->idUser = $idUser;
+        $this->playing = false;
+    }
 
     /**
      * Get id
@@ -114,5 +128,55 @@ class UserInformation
     {
         return $this->username;
     }
+
+    /**
+    *Get socket
+    *
+    *@return int
+    */
+    public function getSocket(){
+        return $this->socket;
+    }
+
+    /**
+    *Set socket
+    *
+    *@param int $socket
+    *
+    *@return UserInformation
+    */
+    public function setSocket($socket){
+        $this->socket = $socket;
+        return $this;
+    }
+
+    /**
+    *Set playing
+    *@param bool $playing
+    *@return UserInformation
+    *
+    */
+    public function setPlaying($playing){
+        if(gettype($playing) == "bool"){
+            $this->playing = $playing;
+            return $this;
+        }else{
+            return $this;
+        }
+    }
+
+    /**
+    *Get playing
+    *@return bool
+    */
+    public function getPlaying(){
+        return $this->playing;
+    }
+
+
+    public function getFriendslist(){
+        return $this->friendsList;
+    }
+
 }
 

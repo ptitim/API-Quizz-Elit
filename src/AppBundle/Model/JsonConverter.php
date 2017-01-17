@@ -15,8 +15,9 @@ class JsonConverter{
         $this->categories =  $categories;
     }
 
-    public function addUser($user){
-        array_push($this->users, $user);
+    public function addUser($userInformation){
+        $temp = array("username" => $userInformation->getUsername(),"socket" => $userInformation->getSocket(), "playing" => $userInformation->getPlaying() ,"friendlist"=> array() );
+        array_push($this->users, $temp);
         return $this;
     }
 
@@ -25,13 +26,25 @@ class JsonConverter{
         return $this;
     }
 
-    public function getUser(){
+    public function getUsers(){
         return $this->users;
     }
 
-    public function setQuestions($questions){
-        $this->questions = $questions;
+    public function resetQuestions($questions){
+        $this->questions = array();
         return $this;        
+    }
+    public function addQuestion($question, $falsies){
+        $temp = array(
+            "body" => $question->getBody(),
+            "answer" => $question->getReponse(),
+            "falsies" => $falsies
+        );
+    }
+
+    public function setQuestions($question){
+        $this->question = $question;
+        return $this;
     }
     public function getQuestions(){
         return $this->questions;

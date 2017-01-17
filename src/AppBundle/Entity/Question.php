@@ -49,27 +49,27 @@ class Question
     }
 
     /**
-     * Set truc
+     * Set body
      *
-     * @param string $truc
+     * @param string $body
      *
      * @return Question
      */
-    public function setTruc($truc)
+    public function setBody($body)
     {
-        $this->truc = $truc;
+        $this->body = $body;
 
         return $this;
     }
 
     /**
-     * Get truc
+     * Get body
      *
      * @return string
      */
-    public function getTruc()
+    public function getBody()
     {
-        return $this->truc;
+        return $this->body;
     }
 
     /**

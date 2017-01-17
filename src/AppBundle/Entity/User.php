@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\UserInformation;
+
 /**
  * User
  */
@@ -78,6 +80,8 @@ class User
     public function getEmail()
     {
         return $this->email;
+    }
+    public function toJson(){
     }
 }
 

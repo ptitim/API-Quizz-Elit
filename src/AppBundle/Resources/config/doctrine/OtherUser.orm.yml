@@ -1,0 +1,19 @@
+AppBundle\Entity\OtherUser:
+    type: entity
+    table: null
+    repositoryClass: AppBundle\Repository\OtherUserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        mail:
+            type: string
+            length: 255
+            nullable: true
+        idExt:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }

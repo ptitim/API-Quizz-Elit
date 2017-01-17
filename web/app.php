@@ -1,13 +1,26 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+if(isset($_SERVER['HTTP_ORIGIN']))
 
+{
+
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+
+    header("Access-Control-Allow-Credentials: true");
+
+    header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization");
+
+    header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS, PUT');
+
+    header("Content-Type: application/json");
+}
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';
-include_once __DIR__.'/../var/bootstrap.php.cache';
+// include_once __DIR__.'/../var/bootstrap.php.cache';
 
-$kernel = new AppKernel('prod', false);
-$kernel->loadClassCache();
+$kernel = new AppKernel("prod", true);
+// $kernel->loadClassCache();
 //$kernel = new AppCache($kernel);
 
 // When using the HttpCache, you need to call the method in your front controller instead of relying on the configuration parameter
