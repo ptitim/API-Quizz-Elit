@@ -61,9 +61,9 @@ class DefaultController extends Controller
 
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData);
-        $username = $rawData->username;
-        $mail = $rawData->email;
-        
+        $username = $data->username;
+        $mail = $data->email;
+
         return new Response("");       
     }
 
@@ -118,8 +118,6 @@ class DefaultController extends Controller
 
             $json->addQuestion($item, $falsies);
         },$questions);
-
-
 
         return new Response($json->toJson());
     }
