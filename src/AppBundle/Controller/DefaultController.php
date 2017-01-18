@@ -39,33 +39,12 @@ class DefaultController extends Controller
         $user = $this->getDoctrine()
                     ->getRepository('AppBundle:UserInformation')
                     ->find(1);
-        
-        $temp = $this->getDoctrine()
-                    ->getRepository('AppBundle:Question')
-                    ->findAll(1);
-
-        // $question = array_map(function($e){
-        //     $em = $this->getDoctrine()
-        //             ->getRepository('AppBundle:Reponse')
-        //             ->findByCatReponse($e->getCatReponse() );
-        //     $falsies = array();
-
-        //     for($i = 0; $i < 3; $i++){
-
-        //         $index = random_int(0, count($em)-1);
-        //         while($em[$index]->getReponse() == $e->getReponse()){
-        //             $index = random_int(0, count($em)-1);
-        //         }
-        //         array_push($falsies, $em[$index]->getReponse());
-        //     }
-        //     return array("body" => $e->getBody() , "answer" => $e->getReponse(), "falsies" => $falsies);
-        // }, $temp);
 
         $question = array(
             array("question" => "sa va?", "answer" => "oui", "falsies" => array("non","bien, bien", "hi")),
             array("question" => "tagada?", "answer" => "nope", "falsies" => array("test", "tres", "hiou"))
         );
-        $categories = array();
+        $categories = array("film", "test");
         $data = new JsonConverter();
         $data->addUser($user);
         $data->setCategories($categories);
@@ -112,12 +91,27 @@ class DefaultController extends Controller
     *
     */
     public function sendQuestions($category){
+        $json = new JsonConverter();
         $questions = $this->getDoctrine()
                 ->getRepository('AppBundle:Question')
-                ->createQuery('question')
-                ->where('question.cat_question == '.category)
-                ->getQuery();
-        return new Response('en attente');
+                ->findByCatQuestion($category);
+        
+        array_map(function($item) use($json){
+            $em = $this->getDoctrine()
+                        ->getRepository('AppBundle:Reponse')
+                        ->findByCatReponse($item->getCatReponse());
+            $falsies = array();
+            for($i = 0; $i < 3; $i++){
+                $index = random_int(0, count($em)-1);
+
+                while($em[$index]->getReponse() == $item->getReponse()){
+                    $index = random_int(0, count($em)-1);
+                }
+                array_push($falsies, $em[$index]->getReponse());
+            }
+            $json->addQuestion($item, $falsies);
+        },$questions);
+        return new Response($json->toJson());
     }
 
 }

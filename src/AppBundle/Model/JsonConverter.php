@@ -40,10 +40,11 @@ class JsonConverter{
             "answer" => $question->getReponse(),
             "falsies" => $falsies
         );
+        array_push($this->questions, $temp);
     }
 
     public function setQuestions($question){
-        $this->question = $question;
+        $this->questions = $question;
         return $this;
     }
     public function getQuestions(){
