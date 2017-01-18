@@ -42,6 +42,11 @@ class UserInformation
 
     private $friendsList;
 
+    /**
+    *@var string
+    */
+    private $imgUrl;
+
     public function __construct(int $idUser){
         $this->idUser = $idUser;
         $this->playing = false;
