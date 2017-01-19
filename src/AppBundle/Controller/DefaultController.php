@@ -89,7 +89,9 @@ class DefaultController extends Controller
         }
         
             $user->setEmail($mail)
-                ->setAccountType($accountType);
+                ->setAccountType($accountType)
+                ->setPassword($password) ;
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();
@@ -102,7 +104,7 @@ class DefaultController extends Controller
     }
 
     /**
-    *@Route("/signin/local")
+    *@Route("/signin")
     */
     public function signinLocal(){
         $rawData = file_get_content("php://input");
