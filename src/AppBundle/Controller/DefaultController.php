@@ -18,6 +18,7 @@ use AppBundle\Entity\UserInformation;
 use AppBundle\Entity\OtherUser;
 
 use AppBundle\Model\JsonConverter;
+use AppBundle\Model\DoctrineHelper;
 
 class DefaultController extends Controller
 {
@@ -32,27 +33,6 @@ class DefaultController extends Controller
         // ]);
         // return new Response('<img src="http://www.peoplefirstinfo.org.uk/media/1137057/homepage.jpg" style="width:100vw; height:100vh;"></img>');
         return new Response('<p>hello etienne</p>');
-    }
-
-    /**
-    *@Route("/testJson")
-    */
-    public function testJson(){
-        $user = $this->getDoctrine()
-                    ->getRepository('AppBundle:UserInformation')
-                    ->find(1);
-
-        $question = array(
-            array("question" => "sa va?", "answer" => "oui", "falsies" => array("non","bien, bien", "hi")),
-            array("question" => "tagada?", "answer" => "nope", "falsies" => array("test", "tres", "hiou"))
-        );
-        $categories = array("film", "test");
-        $data = new JsonConverter();
-        $data->addUser($user);
-        $data->setCategories($categories);
-        $data->setQuestions($question);
-        $json = $data->toJson();
-        return new Response($json);
     }
 
     /**
@@ -75,30 +55,7 @@ class DefaultController extends Controller
             return $response;
         }
         
-        $user = new User();
-        $username = $data->username;
-        
-        if($data->google){
-            $imgUrl = $data->imageUrl;
-            $idUser = $data->id;
-            $accountType= "google";
-            $user->setIdExt($idUser);
-        }else{
-            $accountType = "local";
-            $password = md5($data->password);
-             $user->setPassword($password);
-        }
-        
-            $user->setEmail($mail)
-                ->setAccountType($accountType);
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
-        
-        $id = $user->getId();
-        $information = new UserInformation($id);
-        $information->setUsername($data->username);
+        DoctrineHelper::addUser($data);
 
         return new Response("");       
     }
@@ -107,24 +64,32 @@ class DefaultController extends Controller
     *@Route("/signin")
     */
     public function signinLocal(){
-        $rawData = file_get_content("php://input");
+        $rawData = file_get_contents("php://input");
         $data = json_decode($rawData);
-        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findByMail($data->mail);
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneByEmail($data->email);
 
         if(count($user) == 0){
-            $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByMail($data->mail);
+            $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByEmail($data->email);
             $user = $this->getDoctrine()->getRepository('AppBundle:User')->findById($inf->getIdUser());
             if(count($user) == 1){
                 $user->getPassword == $data->password ? $reponse = true : $reponse = false;
-                return new Reponse(json_encode(array("status" => 200)));
+                $response = new Response();
+                $reponse->setStatusCode(200);
+                return $response;
             }else{
-                return new Response(json_encode(array("status" => 403)));
+                $response = new Response();
+                $reponse->setStatusCode(403);
+                return $response;
             }
         }else{
             if($user->getPassword() == md5($data->password) ){
-                return new Response(json_encode(array("status" => 200)));
+                $response = new Response();
+                $reponse->setStatusCode(200);
+                return $response;
             }else{
-                return new Response(json_encode(array("status" => 403)));
+                $response = new Response();
+                $reponse->setStatusCode(403);
+                return $response;
             }
         }
     }
