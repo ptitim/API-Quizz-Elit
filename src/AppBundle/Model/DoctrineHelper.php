@@ -2,6 +2,9 @@
 
 namespace AppBundle\Model;
 
+use AppBundle\Entity\User;
+use AppBundle\Entity\UserInformation;
+
 class DoctrineHelper{
     static public function addUser($data){
         $user = new User();
@@ -22,14 +25,17 @@ class DoctrineHelper{
             $user->setEmail($mail)
                 ->setAccountType($accountType);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
         $id = $user->getId();
         
-        $information = new UserInformation($id);
+
+        return $user;
+    }
+
+    static public function addUserInformation(){
+            $information = new UserInformation($id);
             $information->setUsername($data->username);
             isset($imgUrl) ? $information->setImgUrl($imgUrl) : null;
-            
+
+            return $information;
     }
 }

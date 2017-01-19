@@ -55,7 +55,11 @@ class DefaultController extends Controller
             return $response;
         }
         
-        DoctrineHelper::addUser($data);
+        $user = DoctrineHelper::addUser($data);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
 
         return new Response("");       
     }
@@ -74,21 +78,21 @@ class DefaultController extends Controller
             if(count($user) == 1){
                 $user->getPassword == $data->password ? $reponse = true : $reponse = false;
                 $response = new Response();
-                $reponse->setStatusCode(200);
+                $response->setStatusCode(200);
                 return $response;
             }else{
                 $response = new Response();
-                $reponse->setStatusCode(403);
+                $response->setStatusCode(403);
                 return $response;
             }
         }else{
             if($user->getPassword() == md5($data->password) ){
                 $response = new Response();
-                $reponse->setStatusCode(200);
+                $response->setStatusCode(200);
                 return $response;
             }else{
                 $response = new Response();
-                $reponse->setStatusCode(403);
+                $response->setStatusCode(403);
                 return $response;
             }
         }
