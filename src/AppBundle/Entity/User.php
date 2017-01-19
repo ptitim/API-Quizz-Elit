@@ -24,6 +24,12 @@ class User
      */
     private $email;
 
+    public function __consctruct(){
+        $this->accountType = "local";
+        return $this;
+    }
+
+
     /**
      * Get id
      *
@@ -81,7 +87,89 @@ class User
     {
         return $this->email;
     }
-    public function toJson(){
+
+    private $userInformation;
+
+    /**
+     * @var string
+     */
+    private $idExt;
+
+    /**
+     * @var string
+     */
+    private $accountType;
+
+
+    /**
+     * Set idExt
+     *
+     * @param string $idExt
+     *
+     * @return User
+     */
+    public function setIdExt($idExt)
+    {
+        $this->idExt = $idExt;
+
+        return $this;
+    }
+
+    /**
+     * Get idExt
+     *
+     * @return string
+     */
+    public function getIdExt()
+    {
+        return $this->idExt;
+    }
+
+    /**
+     * Set accountType
+     *
+     * @param string $accountType
+     *
+     * @return User
+     */
+    public function setAccountType($accountType)
+    {
+        $this->accountType = $accountType;
+
+        return $this;
+    }
+
+    /**
+     * Get accountType
+     *
+     * @return string
+     */
+    public function getAccountType()
+    {
+        return $this->accountType;
+    }
+
+    /**
+     * Set userInformation
+     *
+     * @param \AppBundle\Entity\User $userInformation
+     *
+     * @return User
+     */
+    public function setUserInformation(\AppBundle\Entity\User $userInformation = null)
+    {
+        $this->userInformation = $userInformation;
+
+        return $this;
+    }
+
+    /**
+     * Get userInformation
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getUserInformation()
+    {
+        return $this->userInformation;
     }
 }
-

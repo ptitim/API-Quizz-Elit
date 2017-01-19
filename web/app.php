@@ -1,11 +1,8 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
-if(isset($_SERVER['HTTP_ORIGIN']))
 
-{
-
-    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header("Access-Control-Allow-Origin: *");
 
     header("Access-Control-Allow-Credentials: true");
 
@@ -14,7 +11,7 @@ if(isset($_SERVER['HTTP_ORIGIN']))
     header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS, PUT');
 
     header("Content-Type: application/json");
-}
+    
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';
 // include_once __DIR__.'/../var/bootstrap.php.cache';
@@ -29,3 +26,9 @@ $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();
 $kernel->terminate($request, $response);
+
+/*
+*ajoutez cors listener
+*ecoutez l'evenement requestMethod options
+*renvoyer Response
+*/

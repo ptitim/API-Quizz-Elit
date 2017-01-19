@@ -12,4 +12,5 @@ AppBundle\Entity\CatQuestion:
         name:
             type: string
             length: 255
+            unique: true
     lifecycleCallbacks: {  }

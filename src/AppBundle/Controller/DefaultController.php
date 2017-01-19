@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+use Doctrine\Common\Util\Debug;
+
 use AppBundle\Entity\User;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Reponse;
@@ -63,9 +65,89 @@ class DefaultController extends Controller
         $data = json_decode($rawData);
         $username = $data->username;
         $mail = $data->email;
+        
+        $user = new User();
+        
+        if($data->google){
+            $imgUrl = $data->imageUrl;
+            $idUser = $data->id;
+            $accountType= "google";
+            $user->setIdExt($idUser);
+        }else{
+            $accountType = "local";
+        }
+        
+            $user->setEmail($mail)
+                ->setAccountType($accountType);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        
+        $id = $user->getId();
+        $information = new UserInformation($id);
+        $information->setUsername($data->username);
+
 
         return new Response("");       
     }
+
+    /**
+    *@Route("/signin/google")
+    *@Method("POST")
+    */
+    public function signinGoogle(){
+        $rawData = file_get_content("php://input");
+        $data = json_decode($rawData);
+        $id = $data->id;
+        $em = $this->getDoctrine()
+            ->getRepository('AppBundle:User')
+            ->findByIdExtg($id) ;
+        
+        if(count(em) == 0){
+            $user = new User();
+            $user->setMail($data->email)
+                 ->setUsername($data->username)
+                 ->setIdExt($data->id)
+                 ->setAccountType('google');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $id = $em->getId();
+            $inf = new UserInformation($id);
+            $inf->setImgUrl($data->imageUrl);
+            return new Response('');
+        }else{
+            return new Response(json_encode(array("status" => 200)));
+        }
+    }
+
+    /**
+    *@Route("signin/local")
+    */
+    public function signinLocal(){
+        $rawData = file_get_content("php://input");
+        $data = json_decode($rawData);
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findByMail($data->mail);
+
+        if(count($user) == 0){
+            $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByMail($data->mail);
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findById($inf->getIdUser());
+            if(count($user) == 1){
+                $user->getPassword == $data->password ? $reponse = true : $reponse = false;
+                return new Reponse(json_encode(array("status" => 200)));
+            }else{
+                return new Response(json_encode(array("status" => 403)));
+            }
+        }else{
+            if($user->getPassword() == md5($data->password) ){
+                return new Response(json_encode(array("status" => 200)));
+            }else{
+                return new Response(json_encode(array("status" => 403)));
+            }
+        }
+    }
+
 
     /**
     *@Route("/users/add")
@@ -121,5 +203,4 @@ class DefaultController extends Controller
 
         return new Response($json->toJson());
     }
-
 }

@@ -24,6 +24,15 @@ class OtherUser
 
 
     /**
+    *@param string $mail
+    *@param string $idExt
+    */
+    public function __construct(string $mail, string $idExt){
+        $this->mail = $mail;
+        $this->idExt = $idExt;
+    }
+    
+    /**
      * Get id
      *
      * @return int

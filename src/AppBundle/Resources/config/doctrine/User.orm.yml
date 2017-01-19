@@ -4,6 +4,11 @@ AppBundle\Entity\User:
     repositoryClass: AppBundle\Repository\UserRepository
     id:
         id:
+            oneToOne: 
+                userInformation:
+                    targetEntity: User
+                    mappedBy: userInforamtion
+                    onDelete: CASCADE
             type: integer
             id: true
             generator:
@@ -12,8 +17,17 @@ AppBundle\Entity\User:
         password:
             type: string
             length: 255
+            nullable: true
         email:
             type: string
             length: 255
             unique: true
+        idExt:
+            type: string
+            length: 255
+            nullable: true
+        accountType:
+            type: string
+            length: 255
+            nullable: false
     lifecycleCallbacks: {  }

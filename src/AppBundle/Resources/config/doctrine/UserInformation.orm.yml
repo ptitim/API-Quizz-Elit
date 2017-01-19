@@ -10,6 +10,12 @@ AppBundle\Entity\UserInformation:
                 strategy: AUTO
     fields:
         idUser:
+            oneToOne:
+                user:
+                    targetEntity: User
+                    joinColumn:
+                        name: idUser
+                        referenceColumn: id
             type: integer
             unique: true
         scoreTotal:
