@@ -63,10 +63,20 @@ class DefaultController extends Controller
 
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData);
-        $username = $data->username;
         $mail = $data->email;
+
+        $em = $this->getDoctrine()
+                ->getRepository('AppBundle:User')
+                ->findByEmail($mail) ;
+        
+        if(count($em) == 1){
+            $response = new Response($rawData);
+            $response->setStatusCode(202);
+            return $response;
+        }
         
         $user = new User();
+        $username = $data->username;
         
         if($data->google){
             $imgUrl = $data->imageUrl;
@@ -75,6 +85,7 @@ class DefaultController extends Controller
             $user->setIdExt($idUser);
         }else{
             $accountType = "local";
+            $password = md5($data->password);
         }
         
             $user->setEmail($mail)
@@ -87,43 +98,11 @@ class DefaultController extends Controller
         $information = new UserInformation($id);
         $information->setUsername($data->username);
 
-
         return new Response("");       
     }
 
     /**
-    *@Route("/signin/google")
-    *@Method("POST")
-    */
-    public function signinGoogle(){
-        $rawData = file_get_content("php://input");
-        $data = json_decode($rawData);
-        $id = $data->id;
-        $em = $this->getDoctrine()
-            ->getRepository('AppBundle:User')
-            ->findByIdExtg($id) ;
-        
-        if(count(em) == 0){
-            $user = new User();
-            $user->setMail($data->email)
-                 ->setUsername($data->username)
-                 ->setIdExt($data->id)
-                 ->setAccountType('google');
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
-
-            $id = $em->getId();
-            $inf = new UserInformation($id);
-            $inf->setImgUrl($data->imageUrl);
-            return new Response('');
-        }else{
-            return new Response(json_encode(array("status" => 200)));
-        }
-    }
-
-    /**
-    *@Route("signin/local")
+    *@Route("/signin/local")
     */
     public function signinLocal(){
         $rawData = file_get_content("php://input");
@@ -149,13 +128,7 @@ class DefaultController extends Controller
     }
 
 
-    /**
-    *@Route("/users/add")
-    *@Method({"OPTIONS"})
-    */
-    public function options() {
-        return new Response("");
-    }
+
 
     /**
     *@Route("/users/{id}/update")

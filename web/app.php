@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 
     header('Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS, PUT');
 
-    header("Content-Type: application/json");
     
 /** @var \Composer\Autoload\ClassLoader $loader */
 $loader = require __DIR__.'/../app/autoload.php';
