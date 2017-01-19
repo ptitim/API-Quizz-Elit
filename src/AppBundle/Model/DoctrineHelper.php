@@ -18,8 +18,8 @@ class DoctrineHelper{
             $user->setIdExt($idUser);
         }else{
             $accountType = "local";
-            $password = md5($data->password);
-             $user->setPassword($password);
+            $password = $data->password;
+            $user->setPassword($password);
         }
         
             $user->setEmail($mail)

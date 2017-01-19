@@ -71,20 +71,21 @@ class DefaultController extends Controller
         $rawData = file_get_contents("php://input");
         $data = json_decode($rawData);
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneByEmail($data->email);
-
-        if(count($user) == 0){
-            $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByEmail($data->email);
-            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findById($inf->getIdUser());
-            if(count($user) == 1){
-                $user->getPassword == $data->password ? $reponse = true : $reponse = false;
-                $response = new Response();
-                $response->setStatusCode(200);
-                return $response;
-            }else{
+        
+        //TODO: connection forbidden always to debug  
+        if($user == null){
+            // $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByEmail($data->email);
+            // $user = $this->getDoctrine()->getRepository('AppBundle:User')->findById($inf->getIdUser());
+            // if(count($user) == 1){
+            //     $user->getPassword == $data->password ? $reponse = true : $reponse = false;
+            //     $response = new Response();
+            //     $response->setStatusCode(200);
+            //     return $response;
+            // }else{
                 $response = new Response();
                 $response->setStatusCode(403);
                 return $response;
-            }
+            // }
         }else{
             if($user->getPassword() == md5($data->password) ){
                 $response = new Response();
