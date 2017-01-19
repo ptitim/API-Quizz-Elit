@@ -86,11 +86,11 @@ class DefaultController extends Controller
         }else{
             $accountType = "local";
             $password = md5($data->password);
+             $user->setPassword($password);
         }
         
             $user->setEmail($mail)
-                ->setAccountType($accountType)
-                ->setPassword($password) ;
+                ->setAccountType($accountType);
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
