@@ -24,7 +24,7 @@ Class CorsListener{
          $method  = $_SERVER["REQUEST_METHOD"];
          if ('OPTIONS' != $method) {
             $response = $event->getResponse();
-            $response->headers->set("Content-Type", "application/json");
+            // $response->headers->set("Content-Type", "application/json");
             return $response;
         }
      }

@@ -27,11 +27,6 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // replace this example code with whatever you need
-        // return $this->render('default/index.html.twig', [
-        //     'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        // ]);
-        // return new Response('<img src="http://www.peoplefirstinfo.org.uk/media/1137057/homepage.jpg" style="width:100vw; height:100vh;"></img>');
         return new Response('<p>hello etienne</p>');
     }
 
@@ -61,6 +56,11 @@ class DefaultController extends Controller
         $em->persist($user);
         $em->flush();
 
+        $id = $user->getId();
+        $info = DoctrineHelper::addUserInformation($data, $id);
+
+        $em->persist($em);
+        $em->flush();
         return new Response("");       
     }
 
@@ -72,20 +72,10 @@ class DefaultController extends Controller
         $data = json_decode($rawData);
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneByEmail($data->email);
         
-        //TODO: connection forbidden always to debug  
         if($user == null){
-            // $inf = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findByEmail($data->email);
-            // $user = $this->getDoctrine()->getRepository('AppBundle:User')->findById($inf->getIdUser());
-            // if(count($user) == 1){
-            //     $user->getPassword == $data->password ? $reponse = true : $reponse = false;
-            //     $response = new Response();
-            //     $response->setStatusCode(200);
-            //     return $response;
-            // }else{
                 $response = new Response();
                 $response->setStatusCode(403);
                 return $response;
-            // }
         }else{
             if($user->getPassword() == md5($data->password) ){
                 $response = new Response();
@@ -100,19 +90,17 @@ class DefaultController extends Controller
     }
 
 
-
-
     /**
     *@Route("/users/{id}/update")
     *@Method("POST")
     */
     public function AddUserInformation($id){
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($data);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($userInf);
-        $em->flush();
+        
 
-        return new Response('<p>New Information added:' .$userInf->getUsername() .'</p>');
+        return new Response("");
     }
 
     /**
@@ -130,6 +118,7 @@ class DefaultController extends Controller
                         ->getRepository('AppBundle:Reponse')
                         ->findByCatReponse($item->getCatReponse());
             $falsies = array();
+            $n = 0;
             for($i = 0; $i < 3; $i++){
                 $index = random_int(0, count($em)-1);
 
@@ -142,7 +131,7 @@ class DefaultController extends Controller
                 $tmp = array_values($em);
                 $em=$tmp;
             }
-
+            //todo renvoyer 5 questions
             $json->addQuestion($item, $falsies);
         },$questions);
 

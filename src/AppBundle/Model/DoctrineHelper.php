@@ -31,11 +31,17 @@ class DoctrineHelper{
         return $user;
     }
 
-    static public function addUserInformation(){
-            $information = new UserInformation($id);
-            $information->setUsername($data->username);
-            isset($imgUrl) ? $information->setImgUrl($imgUrl) : null;
+    static public function addUserInformation($data, $id){
+        $information = new UserInformation($id);
+        $information->setUsername($data->username);
+        isset($imgUrl) ? $information->setImgUrl($imgUrl) : null;
 
-            return $information;
+        return $information;
+    }
+
+    static public function changeUserInformation($data, $userInformation){
+        isset($data->username) ? $userInformation->setUsername($data->username) : null;
+        isset($data->imagegUrl) ? $userInformation->setImgUrl($data->imageUrl) : null;
+        isset($data->scoreTotal) ? $userInformation->setScoreTotal($data->scoreTotal) : null;
     }
 }

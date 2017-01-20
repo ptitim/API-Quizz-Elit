@@ -59,9 +59,6 @@ class JsonConverter{
         return $this->categories;
     }
 
-    public function parser(){
-
-    }
     public function toJson(){
         $json = json_encode(array(
             "users" => $this->users,
@@ -69,5 +66,14 @@ class JsonConverter{
             "categories" => $this->categories
         ));
         return $json;
+    }
+
+    static public function sortCatToJson($data){
+
+        $tmp = array_map(function($item){
+            return $item->getName();
+        },$data);
+
+        return json_encode(array("list" => $tmp));
     }
 }
