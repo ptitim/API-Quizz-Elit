@@ -16,7 +16,7 @@ class JsonConverter{
     }
 
     public function addUser($userInformation){
-        $temp = array("username" => $userInformation->getUsername(),"socket" => $userInformation->getSocket(), "playing" => $userInformation->getPlaying() ,"friendlist"=> array() );
+        $temp = array("username" => $userInformation->getUsername(),"socket" => $userInformation->getSocket(),"friendlist"=> array(), "scoreTotal" => $userInformation->getScoreTotal() );
         array_push($this->users, $temp);
         return $this;
     }

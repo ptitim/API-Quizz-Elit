@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Doctrine\Common\Util\Debug;
 
+use AppBundle\EventListener\TokenListener;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Reponse;
@@ -27,11 +28,12 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $test = new TokenListener(array("123"));
         return new Response('<p>hello etienne</p>');
     }
 
     /**
-    *@Route("/users/add")
+    *@Route("/users/signup")
     *@Method({"POST"})
     */
     public function addUser(){
@@ -65,7 +67,7 @@ class DefaultController extends Controller
     }
 
     /**
-    *@Route("/signin")
+    *@Route("/users/signin")
     */
     public function signinLocal(){
         $rawData = file_get_contents("php://input");
@@ -103,6 +105,22 @@ class DefaultController extends Controller
         return new Response("");
     }
 
+    /**
+    *@Route("/users/{id}")
+    *
+    */
+    public function getUserInformation($id){
+        $data = $this->getDoctrine()->getRepository('AppBundle:UserInformation')->findOneByIdUser($id);
+        if($data == null){
+            $response = new Response();
+            $response->setStatusCode(400);
+            return $response;
+        }else{
+            $json = new JsonConverter();
+            $json->addUser($data);
+            return new Response($json->toJson());
+        }
+    }
     /**
     *@Route("/game/{category}")
     *

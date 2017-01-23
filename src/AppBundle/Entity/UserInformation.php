@@ -37,8 +37,6 @@ class UserInformation
     /**
     * @var boolean
     */
-    private $playing;
-
 
     private $friendsList;
 
@@ -154,30 +152,6 @@ class UserInformation
         $this->socket = $socket;
         return $this;
     }
-
-    /**
-    *Set playing
-    *@param bool $playing
-    *@return UserInformation
-    *
-    */
-    public function setPlaying($playing){
-        if(gettype($playing) == "bool"){
-            $this->playing = $playing;
-            return $this;
-        }else{
-            return $this;
-        }
-    }
-
-    /**
-    *Get playing
-    *@return bool
-    */
-    public function getPlaying(){
-        return $this->playing;
-    }
-
 
     public function getFriendslist(){
         return $this->friendsList;
