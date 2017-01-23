@@ -7,6 +7,7 @@ class Room{
     protected $name;
     protected $clients;
     protected $questions;
+    protected $category;
     static private $rooms;
 
     public function __construct($idUser){

@@ -4,6 +4,8 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserInformation;
+use AppBundle\Model\JsonConverter;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DoctrineHelper extends Controller{
@@ -45,9 +47,6 @@ class DoctrineHelper extends Controller{
         isset($data->username) ? $userInformation->setUsername($data->username) : null;
         isset($data->imagegUrl) ? $userInformation->setImgUrl($data->imageUrl) : null;
         isset($data->scoreTotal) ? $userInformation->setScoreTotal($data->scoreTotal) : null;
-    }
-    static public function getQuestionAnswer($category){
-
     }
 
 }

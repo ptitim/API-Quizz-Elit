@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Model\JsonConverter;
+
 /**
  * QuestionRepository
  *
@@ -10,4 +12,47 @@ namespace AppBundle\Repository;
  */
 class QuestionRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByRandom($category){
+        $json = new JsonConverter();
+        // $questions = $this->getDoctrine()->getManager()
+        //         ->getRepository('AppBundle:Question')
+        //         ->findByCatQuestion($category);
+        
+        $questions = $this->getEntityManager()->createQuery('SELECT p FROM AppBundle:Question p WHERE p.catQuestion = :cat')
+                        ->setParameter('cat', $category)->getResult();
+        dump($category);
+        dump($questions);
+
+        $fiveQuestion = array();
+
+        for($i=0; $i < 5; $i++){
+            $index = random_int(0, count($questions)-1);
+            array_push($fiveQuestion, $questions[$index]);
+            unset($questions[$index]);
+            array_values($questions);
+        }
+
+        array_map(function($item) use($json){
+            $em = $this->getDoctrine()->getManager()
+                        ->getRepository('AppBundle:Reponse')
+                        ->findByCatReponse($item->getCatReponse());
+            $falsies = array();
+            $n = 0;
+            for($i = 0; $i < 3; $i++){
+                $index = random_int(0, count($em)-1);
+
+                while($em[$index]->getReponse() == $item->getReponse()){
+                    $index = random_int(0, count($em)-1);
+                }
+
+                array_push($falsies, $em[$index]->getReponse());
+                unset($em[$index]);
+                $tmp = array_values($em);
+                $em=$tmp;
+            }
+            //todo renvoyer 5 questions
+            $json->addQuestion($item, $falsies);
+        },$questions);
+        return $json->tojson();
+    }
 }
