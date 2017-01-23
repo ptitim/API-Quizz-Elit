@@ -4,8 +4,9 @@ namespace AppBundle\Model;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserInformation;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class DoctrineHelper{
+class DoctrineHelper extends Controller{
     static public function addUser($data){
         $user = new User();
         $username = $data->username;
@@ -34,7 +35,8 @@ class DoctrineHelper{
     static public function addUserInformation($data, $id){
         $information = new UserInformation($id);
         $information->setUsername($data->username);
-        isset($imgUrl) ? $information->setImgUrl($imgUrl) : null;
+        $information->setScoreTotal(0);
+        isset($imgUrl) ? $information->setImgUrl($imgUrl) : $information->setImgUrl("http://maxlab.fr/wp-content/uploads/2014/05/png-293x300.png");
 
         return $information;
     }
@@ -44,4 +46,8 @@ class DoctrineHelper{
         isset($data->imagegUrl) ? $userInformation->setImgUrl($data->imageUrl) : null;
         isset($data->scoreTotal) ? $userInformation->setScoreTotal($data->scoreTotal) : null;
     }
+    static public function getQuestionAnswer($category){
+
+    }
+
 }

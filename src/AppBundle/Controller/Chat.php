@@ -3,6 +3,8 @@ namespace AppBundle\Controller;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
+use AppBundle\Model\Room;
+
 class Chat implements MessageComponentInterface {
     protected $clients;
 
@@ -17,17 +19,28 @@ class Chat implements MessageComponentInterface {
         $conn->send('{"id": '.$conn->resourceId.'}');
     }
 
-    public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+    public function onMessage(ConnectionInterface $from, $rawData) {
+        $data = json_decode($rawData);
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
-            }
+        switch ($data->type){
+            case "game.create":
+                $this->game_create($data, $from);
+                break;
+            case "game.start":
+                $this->game_start($data);
+                break; 
+
         }
+        // $numRecv = count($this->clients) - 1;
+        // echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+        //     , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+
+        // foreach ($this->clients as $client) {
+        //     if ($from !== $client) {
+        //         // The sender is not the receiver, send to each client connected
+        //         $client->send($msg);
+        //     }
+        // }
     }
 
     public function onClose(ConnectionInterface $conn) {
@@ -41,5 +54,23 @@ class Chat implements MessageComponentInterface {
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
+    }
+
+    private function game_create($data, $client){
+        $room = new Room($data->idUser);
+        $room->joinRoom($client);
+
+        $idRoom = $room->getId();
+        $json = json_encode(array('type'=>'game.create', 'idRoom' => $idRoom));
+        $client->send($json);
+    }
+
+    private function game_start($data){
+        $room  = Room::getRoom($data->idRoom);
+        $clients = $room->getClients();
+        
+        foreach($client as $clients){
+            $client->send($json);
+        }
     }
 }

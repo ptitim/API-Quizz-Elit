@@ -44,10 +44,10 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()
                 ->getRepository('AppBundle:User')
-                ->findByEmail($mail) ;
+                ->findOneByEmail($mail) ;
         
         if(count($em) == 1){
-            $response = new Response($rawData);
+            $response = new Response(json_encode(array("id" => $em->getId())));
             $response->setStatusCode(202);
             return $response;
         }
@@ -60,10 +60,11 @@ class DefaultController extends Controller
 
         $id = $user->getId();
         $info = DoctrineHelper::addUserInformation($data, $id);
-
-        $em->persist($em);
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($info);
         $em->flush();
-        return new Response("");       
+        return new Response(json_encode(array("id" => $id)));       
     }
 
     /**
@@ -79,8 +80,9 @@ class DefaultController extends Controller
                 $response->setStatusCode(403);
                 return $response;
         }else{
+
             if($user->getPassword() == md5($data->password) ){
-                $response = new Response();
+                $response = new Response(json_encode(array('id' => $user->getId())));
                 $response->setStatusCode(200);
                 return $response;
             }else{
@@ -91,16 +93,21 @@ class DefaultController extends Controller
         }
     }
 
+    private function setUserInformation($info){
+
+
+    }
+
 
     /**
     *@Route("/users/{id}/update")
-    *@Method("POST")
+    *@Method("PUT")
     */
     public function AddUserInformation($id){
         $rawData = file_get_contents("php://input");
         $data = json_decode($data);
 
-        
+
 
         return new Response("");
     }
@@ -121,6 +128,7 @@ class DefaultController extends Controller
             return new Response($json->toJson());
         }
     }
+
     /**
     *@Route("/game/{category}")
     *
@@ -154,5 +162,18 @@ class DefaultController extends Controller
         },$questions);
 
         return new Response($json->toJson());
+    }
+
+    /**
+    *@Route("/tg")
+    */
+    public function getListCat(){
+        $rep = $this->getDoctrine()->getRepository('AppBundle:CatQuestion')->findAll();
+        
+        $tmp = array_map(function($item){
+            return $item->getName();
+        }, $rep);
+
+        return new Response(json_encode($tmp));
     }
 }

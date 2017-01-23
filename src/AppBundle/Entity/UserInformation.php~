@@ -157,28 +157,5 @@ class UserInformation
         return $this->friendsList;
     }
 
-
-    /**
-     * Set imgUrl
-     *
-     * @param string $imgUrl
-     *
-     * @return UserInformation
-     */
-    public function setImgUrl($imgUrl)
-    {
-        $this->imgUrl = $imgUrl;
-
-        return $this;
-    }
-
-    /**
-     * Get imgUrl
-     *
-     * @return string
-     */
-    public function getImgUrl()
-    {
-        return $this->imgUrl;
-    }
 }
+
