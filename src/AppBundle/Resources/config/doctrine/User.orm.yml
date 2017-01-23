@@ -30,4 +30,8 @@ AppBundle\Entity\User:
             type: string
             length: 255
             nullable: false
+        token: 
+            type: string
+            length: 255
+            nullable: false
     lifecycleCallbacks: {  }
