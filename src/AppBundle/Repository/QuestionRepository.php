@@ -15,12 +15,6 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findByRandom($category){
         $json = new JsonConverter();
-        // $questions = $this->getDoctrine()->getManager()
-        //         ->getRepository('AppBundle:Question')
-        //         ->findByCatQuestion($category);
-        
-        // $questions = $this->getEntityManager()->createQuery('SELECT p FROM AppBundle:Question p WHERE p.catQuestion = :cat ORDER BY RAND() LIMIT 5')->addSelect('RAND() as HIDDEN rand')
-        //                 ->setParameter('cat', $category)->getResult();
         $questions = $this->createQueryBuilder('q')
                         ->where('q.catQuestion = :cat')
                         ->setParameter('cat', $category)
@@ -28,40 +22,31 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
                         ->addOrderBy('rand')
                         ->setMaxResults(5)
                         ->getQuery()->getResult();
-        // $fiveQuestion = array();
-        // count($questions) < 5 ? $limit = count($questions) : $limit = 5;
-        
-        // for($i=0; $i < $limit; $i++){
-        //     if(count($questions) > 2){
-        //         $index = random_int(0, count($questions)-1);
-        //         array_push($fiveQuestion, $questions[$index]);
-        //         unset($questions[$index]);
-        //         array_values($questions);
-        //     }
-        // }
 
-        // array_map(function($item) use($json){
-        //     $em = $this->getDoctrine()->getManager()
-        //                 ->getRepository('AppBundle:Reponse')
-        //                 ->findByCatReponse($item->getCatReponse());
-        //     $falsies = array();
-        //     $n = 0;
-        //     for($i = 0; $i < 3; $i++){
-        //         $index = random_int(0, count($em)-1);
+        array_map(function($item) use($json){
+            $em = $this->getEntityManager()
+                        ->createQuery('SELECT r FROM AppBundle:Reponse r WHERE r.catReponse = :cat')
+                        ->setParameter('cat', $item->getCatReponse() )
+                        ->getResult();
 
-        //         while($em[$index]->getReponse() == $item->getReponse()){
-        //             $index = random_int(0, count($em)-1);
-        //         }
+            $falsies = array();
+            $n = 0;
+            for($i = 0; $i < 3; $i++){
+                $index = random_int(0, count($em)-1);
 
-        //         array_push($falsies, $em[$index]->getReponse());
-        //         unset($em[$index]);
-        //         $tmp = array_values($em);
-        //         $em=$tmp;
-        //     }
-        //     //todo renvoyer 5 questions
-        //     $json->addQuestion($item, $falsies);
-        // },$questions);
-        // return $json->tojson();
-        return $questions;
+                while($em[$index]->getReponse() == $item->getReponse()){
+                    $index = random_int(0, count($em)-1);
+                }
+
+                array_push($falsies, $em[$index]->getReponse());
+                unset($em[$index]);
+                $tmp = array_values($em);
+                $em=$tmp;
+            }
+            //todo renvoyer 5 questions
+            $json->addQuestion($item, $falsies);
+        },$questions);
+
+        return $json->toJson();
     }
 }

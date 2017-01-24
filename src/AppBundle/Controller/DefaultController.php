@@ -134,32 +134,8 @@ class DefaultController extends Controller
     *
     */
     public function sendQuestions($category){
-        $json = new JsonConverter();
         $questions = $this->getDoctrine()->getRepository('AppBundle:Question')->findByRandom($category);
-        // dump($tmp);
-        array_map(function($item) use($json){
-            $em = $this->getDoctrine()->getManager()
-                        ->getRepository('AppBundle:Reponse')
-                        ->findByCatReponse($item->getCatReponse());
-            $falsies = array();
-            $n = 0;
-            for($i = 0; $i < 3; $i++){
-                $index = random_int(0, count($em)-1);
-
-                while($em[$index]->getReponse() == $item->getReponse()){
-                    $index = random_int(0, count($em)-1);
-                }
-
-                array_push($falsies, $em[$index]->getReponse());
-                unset($em[$index]);
-                $tmp = array_values($em);
-                $em=$tmp;
-            }
-            //todo renvoyer 5 questions
-            $json->addQuestion($item, $falsies);
-        },$questions);
-
-        return new Response($json->tojson());
+        return new Response($questions);
     }
 
     /**
