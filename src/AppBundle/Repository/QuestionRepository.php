@@ -22,6 +22,8 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
         // $questions = $this->getEntityManager()->createQuery('SELECT p FROM AppBundle:Question p WHERE p.catQuestion = :cat ORDER BY RAND() LIMIT 5')->addSelect('RAND() as HIDDEN rand')
         //                 ->setParameter('cat', $category)->getResult();
         $questions = $this->createQueryBuilder('q')
+                        ->where('q.catQuestion = :cat')
+                        ->setParameter('cat', $category)
                         ->addSelect('RAND() as HIDDEN rand')
                         ->addOrderBy('rand')
                         ->setMaxResults(5)
