@@ -149,7 +149,6 @@ class DefaultController extends Controller
         $tmp = array_map(function($item){
             return $item->getName();
         }, $rep);
-
         return new Response(json_encode($tmp));
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Repository;
 
 use AppBundle\Model\JsonConverter;
 
+use Doctrine\Common\Util\Debug;
 /**
  * QuestionRepository
  *
@@ -18,19 +19,24 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
         //         ->getRepository('AppBundle:Question')
         //         ->findByCatQuestion($category);
         
-        $questions = $this->getEntityManager()->createQuery('SELECT p FROM AppBundle:Question p WHERE p.catQuestion = :cat')
-                        ->setParameter('cat', $category)->getResult();
-        dump($category);
-        dump($questions);
-
-        $fiveQuestion = array();
-
-        for($i=0; $i < 5; $i++){
-            $index = random_int(0, count($questions)-1);
-            array_push($fiveQuestion, $questions[$index]);
-            unset($questions[$index]);
-            array_values($questions);
-        }
+        // $questions = $this->getEntityManager()->createQuery('SELECT p FROM AppBundle:Question p WHERE p.catQuestion = :cat ORDER BY RAND() LIMIT 5')->addSelect('RAND() as HIDDEN rand')
+        //                 ->setParameter('cat', $category)->getResult();
+        $questions = $this->createQueryBuilder('q')
+                        ->addSelect('RAND() as HIDDEN rand')
+                        ->addOrderBy('rand')
+                        ->setMaxResults(5)
+                        ->getQuery()->getResult();
+        // $fiveQuestion = array();
+        // count($questions) < 5 ? $limit = count($questions) : $limit = 5;
+        
+        // for($i=0; $i < $limit; $i++){
+        //     if(count($questions) > 2){
+        //         $index = random_int(0, count($questions)-1);
+        //         array_push($fiveQuestion, $questions[$index]);
+        //         unset($questions[$index]);
+        //         array_values($questions);
+        //     }
+        // }
 
         array_map(function($item) use($json){
             $em = $this->getDoctrine()->getManager()
