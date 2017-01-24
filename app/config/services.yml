@@ -19,3 +19,8 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController}
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
+
+my_mailer:
+    class: AppBundle\Model\Room
+    calls:
+         - [getManager, [doctrine.orm.entity_manager]]

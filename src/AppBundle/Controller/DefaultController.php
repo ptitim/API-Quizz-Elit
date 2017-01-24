@@ -139,7 +139,7 @@ class DefaultController extends Controller
     }
 
     /**
-    *@Route("/tg")
+    *@Route("/getcategory")
     */
     public function getListCat(){
         $rep = $this->getDoctrine()->getRepository('AppBundle:CatQuestion')->findAll();

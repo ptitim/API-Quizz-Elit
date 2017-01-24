@@ -69,7 +69,7 @@ class Chat implements MessageComponentInterface {
     }
 
     private function game_create($data, $client){
-        $room = new Room($data->idUser);
+        $room = new Room($data->idUser, $data->category);
         $room->joinRoom($client);
 
         $idRoom = $room->getId();
@@ -80,9 +80,11 @@ class Chat implements MessageComponentInterface {
     private function game_start($data){
         $room  = Room::getRoom($data->idRoom);
         $clients = $room->getClients();
+        $quesions = $room->setQuestions()->getQuestions();
 
         foreach($client as $clients){
-            $client->send($json);
+            $client->send($questions);
         }
     }
+
 }

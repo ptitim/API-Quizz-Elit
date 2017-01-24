@@ -8,23 +8,11 @@ class Room{
     protected $clients;
     protected $questions;
     protected $category;
+
+    /**
+    *Static
+    */
     static private $rooms;
-
-    public function __construct($idUser){
-        $this->id = $idUser;
-    }
-
-    public function joinRoom($client){
-        if(count($this->clients) > 2){
-            return ;
-        }else{
-            array_push($this->clients, $client);
-        }
-    }
-
-    public function __destruct(){
-        echo sprintf($this->id . ' room destroyed');
-    }
 
     static public function getRoom($id){
         foreach($room as $this->rooms){
@@ -34,6 +22,40 @@ class Room{
         }
     }
 
+
+    public function __construct($idUser, $category){
+        $this->id = $idUser;
+        $this->category = $category;
+    }
+
+    public function __destruct(){
+        echo sprintf($this->id . ' room destroyed');
+    }
+
+
+
+
+    /**
+    *Add Client to the room
+    *@return array
+    */
+    public function joinRoom($client){
+        if(count($this->clients) > 2){
+            return $this->clients;
+        }else{
+            array_push($this->clients, $client);
+            return $this->clients;
+        }
+    }
+
+
+
+
+    /**
+    *get clients
+    *@param Client
+    *@return array
+    */
     public function getClients(){
         return $this->clients;
     }
@@ -56,5 +78,64 @@ class Room{
     */
     public  function getId(){
         return $this->id;
+    }
+
+    /**
+    *set name
+    *@param simple
+    *@return Room
+    */
+    public function setName(string $name){
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+    *get name
+    *@return string
+    */
+    public function getName(){
+        return $this->name;
+    }
+
+
+    /**
+    *set a new array of 5 question
+    *return Room
+    */
+    public function setQuestions(){
+        $this->questions = $this->getManager()
+                    ->getRepository('AppBundle:Question')
+                    ->findByRandom($category);
+        return $this;
+    }
+    /**
+    *get question
+    */
+    public function getQuestions(){
+        return $this->questions;
+    }
+
+    /**
+    *set category
+    *@param string
+    *@return Room
+    */
+    public function setCategory(string $category){
+        $this->category = $category;
+        return $this;
+    }
+
+    /**
+    *get category
+    *@return string
+    */
+    public function getCategory(){
+        return $this->category;
+    }
+
+
+    public function getManager($entityManager){
+        return $entityManager();        
     }
 }
