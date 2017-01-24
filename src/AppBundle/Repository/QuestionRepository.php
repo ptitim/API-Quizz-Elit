@@ -38,27 +38,28 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
         //     }
         // }
 
-        array_map(function($item) use($json){
-            $em = $this->getDoctrine()->getManager()
-                        ->getRepository('AppBundle:Reponse')
-                        ->findByCatReponse($item->getCatReponse());
-            $falsies = array();
-            $n = 0;
-            for($i = 0; $i < 3; $i++){
-                $index = random_int(0, count($em)-1);
+        // array_map(function($item) use($json){
+        //     $em = $this->getDoctrine()->getManager()
+        //                 ->getRepository('AppBundle:Reponse')
+        //                 ->findByCatReponse($item->getCatReponse());
+        //     $falsies = array();
+        //     $n = 0;
+        //     for($i = 0; $i < 3; $i++){
+        //         $index = random_int(0, count($em)-1);
 
-                while($em[$index]->getReponse() == $item->getReponse()){
-                    $index = random_int(0, count($em)-1);
-                }
+        //         while($em[$index]->getReponse() == $item->getReponse()){
+        //             $index = random_int(0, count($em)-1);
+        //         }
 
-                array_push($falsies, $em[$index]->getReponse());
-                unset($em[$index]);
-                $tmp = array_values($em);
-                $em=$tmp;
-            }
-            //todo renvoyer 5 questions
-            $json->addQuestion($item, $falsies);
-        },$questions);
-        return $json->tojson();
+        //         array_push($falsies, $em[$index]->getReponse());
+        //         unset($em[$index]);
+        //         $tmp = array_values($em);
+        //         $em=$tmp;
+        //     }
+        //     //todo renvoyer 5 questions
+        //     $json->addQuestion($item, $falsies);
+        // },$questions);
+        // return $json->tojson();
+        return $questions;
     }
 }
