@@ -136,7 +136,7 @@ class DefaultController extends Controller
     public function sendQuestions($category){
 
         $tmp = $this->getDoctrine()->getRepository('AppBundle:Question')->findByRandom($category);
-        dump($tmp);
+        Doctrine\Common\Util\Debug::dump($tmp);
         return new Response('$tmp');
     }
 
