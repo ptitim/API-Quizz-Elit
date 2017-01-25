@@ -18,8 +18,8 @@ class QuestionRepository extends \Doctrine\ORM\EntityRepository
         $questions = $this->createQueryBuilder('q')
                         ->where('q.catQuestion = :cat')
                         ->setParameter('cat', $category)
-                        ->addSelect('RAND() as HIDDEN rand')
-                        ->addOrderBy('rand')
+                        // ->addSelect('RAND() as HIDDEN rand')
+                        ->addOrderBy('RAND()')
                         ->setMaxResults(5)
                         ->getQuery()->getResult();
 

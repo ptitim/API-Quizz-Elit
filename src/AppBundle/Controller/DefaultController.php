@@ -149,4 +149,8 @@ class DefaultController extends Controller
         }, $rep);
         return new Response(json_encode($tmp));
     }
+
+    static public function getDoctrino(){
+        return $this->getDoctrine();
+    }
 }
