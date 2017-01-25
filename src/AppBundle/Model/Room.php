@@ -2,6 +2,9 @@
 
 namespace AppBundle\Model;
 
+use Ratchet\MessageComponentInterface;
+use Ratchet\ConnectionInterface;
+
 class Room{
     protected $id;
     protected $name;
@@ -9,7 +12,7 @@ class Room{
     protected $questions;
     protected $category;
 
-    /**
+    /*
     *Static
     */
     static private $rooms;
@@ -31,8 +34,11 @@ class Room{
         return $notFull;
     }
 
-
+    /*
+    *Public
+    */
     public function __construct($idUser, $category){
+        $this->clients = new \SplObjectStorage;
         $this->id = $idUser;
         $this->category = $category;
     }
@@ -49,6 +55,7 @@ class Room{
     *@return array
     */
     public function joinRoom($client){
+        $this->clients->attach($client);
         if(count($this->clients) > 2){
             return $this->clients;
         }else{

@@ -68,4 +68,12 @@ class Client{
     public function getUserInfo(){
         return $this->userInfo;
     }
+
+    public function setNewScoreTotal(int $score){
+        $info = $doctrine->getRepository('AppBundle:UserInformation')->findOneById($this->idUser);
+        $info->setScoreTotal($score);
+        $em = $dotrine->getManager();
+        $em->persist($info);
+        $em->flush();
+    }
 }
