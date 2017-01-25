@@ -22,6 +22,15 @@ class Room{
         }
     }
 
+    static public function getNotFullRooms(){
+        $notFull = array_filter($this->rooms, function($item){
+            if(count($item) < 2){
+                return $item;
+            }
+        });
+        return $notFull;
+    }
+
 
     public function __construct($idUser, $category){
         $this->id = $idUser;
@@ -133,7 +142,6 @@ class Room{
     public function getCategory(){
         return $this->category;
     }
-
 
     public function getManager($entityManager){
         return $entityManager();        
