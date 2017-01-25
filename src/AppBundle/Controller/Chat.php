@@ -28,7 +28,7 @@ class Chat implements MessageComponentInterface {
                 break;
             case "game.start":
                 $this->game_start($data);
-                break; 
+                break;
             case "websocket.state":
                 return true;
             case "game.join":
@@ -85,6 +85,11 @@ class Chat implements MessageComponentInterface {
         foreach($client as $clients){
             $client->send($questions);
         }
+    }
+    private function game_select($data){
+      $room = Room::getRoom($data->idRoom);
+      $clients = $room->getClients();
+      $selection = $room->setSelection();
     }
 
 }
