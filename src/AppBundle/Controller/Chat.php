@@ -95,6 +95,14 @@ class Chat implements MessageComponentInterface {
             $client->send(json_encode(array('idUser' => $client->getIdUser(),'selection' => $data->selection)));
         }
     }
+    private function game_score($data){
+      $room = Room::getRoom($data->idRoom);
+      $clients = $room->getClients();
+
+      foreach ($client as $clients) {
+            $client->send(json_encode(array('idUser' => $client->getIdUser(),'score' => $data->score)));
+      }
+    }
 
     private function game_join($data){
         $room = Room::getRoom($data->idRoom);
